@@ -248,6 +248,23 @@ html.loading .nav,html.loading main,html.loading footer{opacity:0}
   .lb .x{top:calc(env(safe-area-inset-top,0px) + 6px);right:calc(env(safe-area-inset-right,0px) + 8px);width:38px}
   .lb .count{bottom:calc(env(safe-area-inset-bottom,0px) + 4px);font-size:12px}
 }
+/* ===== E-book download link (reading mode only) ===== */
+.lb-dl{display:none}
+.lb.reading .lb-dl{display:block;position:relative;z-index:5;margin-top:10px;padding:2px 6px;color:#fff;opacity:.85;font-weight:400;font-size:15px;line-height:1.3;text-decoration:underline;text-underline-offset:3px;touch-action:manipulation}
+.lb.reading .lb-dl:hover{opacity:1}
+.lb-dl:focus-visible{outline:3px solid #fff;outline-offset:3px;border-radius:4px}
+.lb.open ~ footer{visibility:hidden}
+.lb.reading #lbImg{max-height:calc(100vh - 210px)}
+@supports (height:100dvh){.lb.reading #lbImg{max-height:calc(100dvh - 210px)}}
+@media (max-width:600px){
+  .lb.reading #lbImg{max-height:calc(100vh - 245px)}
+  @supports (height:100dvh){.lb.reading #lbImg{max-height:calc(100dvh - 245px)}}
+}
+@media (max-height:500px) and (orientation:landscape){
+  .lb.reading #lbImg{max-height:calc(100vh - 74px)}
+  @supports (height:100dvh){.lb.reading #lbImg{max-height:calc(100dvh - 74px)}}
+  .lb.reading .lb-dl{margin-top:4px;font-size:13px}
+}
 </style>
 </head>
 <body>
@@ -321,7 +338,7 @@ html.loading .nav,html.loading main,html.loading footer{opacity:0}
   <audio id="audio" preload="metadata"></audio>
 </main>
 <div class="lb" id="lb" role="dialog" aria-modal="true">
-  <div class="lb-fig"><div class="lb-year" id="lbYear"></div><img id="lbImg" alt=""></div>
+  <div class="lb-fig"><div class="lb-year" id="lbYear"></div><img id="lbImg" alt=""><a class="lb-dl" id="lbDl" href="assets/Soeurs-de-Coeur.pdf" download="Sœurs de Cœur.pdf">Download</a></div>
   <button type="button" class="x" id="lbX"><img src="assets/f5fcb85b70bf.png" alt=""></button>
   <button type="button" class="prev" id="lbPrev"><img src="assets/53046092f2e1.png" alt=""></button>
   <button type="button" class="next" id="lbNext"><img src="assets/5623cbdf42ab.png" alt=""></button>
