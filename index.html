@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Sœurs de Cœur">
 <link rel="icon" type="image/png" sizes="192x192" href="assets/8072b204627b.png?v=4">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/e03d35e8d6f9.png?v=4">
 <link rel="apple-touch-icon" href="assets/72574158ebff.png?v=4">
@@ -261,9 +265,24 @@ html.loading .nav,html.loading main,html.loading footer{opacity:0}
   @supports (height:100dvh){.lb.reading #lbImg{max-height:calc(100dvh - 245px)}}
 }
 @media (max-height:500px) and (orientation:landscape){
-  .lb.reading #lbImg{max-height:calc(100vh - 74px)}
-  @supports (height:100dvh){.lb.reading #lbImg{max-height:calc(100dvh - 74px)}}
+  .lb{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 24px)}
+  .lb .count{bottom:max(env(safe-area-inset-bottom,0px),4px)}
+  #lbImg{max-height:calc(100vh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 54px)}
+  @supports (height:100dvh){#lbImg{max-height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 54px)}}
+  .lb.reading #lbImg{max-height:calc(100vh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 58px)}
+  @supports (height:100dvh){.lb.reading #lbImg{max-height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 58px)}}
   .lb.reading .lb-dl{margin-top:4px;font-size:13px}
+}
+/* ===== Phones: nav, book and credits all on one screen ===== */
+@media (max-width:600px) and (orientation:portrait){
+  footer{font-size:11px;line-height:1.6}
+}
+@media (max-height:500px) and (orientation:landscape){
+  :root{--book-w:min(88vw,calc((100vh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 110px)*2.372))}
+  @supports (height:100dvh){:root{--book-w:min(88vw,calc((100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 110px)*2.372))}}
+  .nav{padding-top:22px;padding-right:max(24px,calc(env(safe-area-inset-right,0px) + 12px))}
+  main{padding-top:4px;padding-bottom:4px}
+  footer{font-size:10.5px;line-height:1.35;padding-bottom:4px}
 }
 </style>
 </head>
@@ -338,7 +357,7 @@ html.loading .nav,html.loading main,html.loading footer{opacity:0}
   <audio id="audio" preload="metadata"></audio>
 </main>
 <div class="lb" id="lb" role="dialog" aria-modal="true">
-  <div class="lb-fig"><div class="lb-year" id="lbYear"></div><img id="lbImg" alt=""><a class="lb-dl" id="lbDl" href="assets/Soeurs-de-Coeur.pdf" download="Sœurs de Cœur.pdf">Download</a></div>
+  <div class="lb-fig"><div class="lb-year" id="lbYear"></div><img id="lbImg" alt=""><a class="lb-dl" id="lbDl" href="assets/Soeurs-de-Coeur.pdf" download="Sœurs de Cœur.pdf">Télécharger</a></div>
   <button type="button" class="x" id="lbX"><img src="assets/f5fcb85b70bf.png" alt=""></button>
   <button type="button" class="prev" id="lbPrev"><img src="assets/53046092f2e1.png" alt=""></button>
   <button type="button" class="next" id="lbNext"><img src="assets/5623cbdf42ab.png" alt=""></button>
@@ -545,7 +564,7 @@ html.loading .nav,html.loading main,html.loading footer{opacity:0}
     lbImg.src=LIST[cur];
     var s=T[lang];
     lbImg.alt=(mode==='book'?(lang==='fr'?'Page':'Page'):s.photo)+' '+(cur+1)+' '+s.of+' '+LIST.length;
-    document.getElementById('lbCount').textContent=(mode==='book'?(lang==='fr'?'Page ':'Page '):'')+(cur+1)+' / '+LIST.length;
+    document.getElementById('lbCount').textContent=(mode==='book'?'Page ':'')+(cur+1)+' / '+LIST.length;
     lb.classList.toggle('reading',mode==='book');
     document.getElementById('lbYear').textContent=(mode==='photo'&&YEARS[cur])?YEARS[cur]:'';
   }
@@ -556,6 +575,7 @@ html.loading .nav,html.loading main,html.loading footer{opacity:0}
     document.getElementById('lbX').setAttribute('aria-label',s.close);
     document.getElementById('lbPrev').setAttribute('aria-label',s.prev);
     document.getElementById('lbNext').setAttribute('aria-label',s.next);
+    document.getElementById('lbDl').textContent=lang==='fr'?'Télécharger':'Download';
     book.querySelectorAll('.photo').forEach(function(b){b.setAttribute('aria-label',s.open+' '+(+b.dataset.i+1))});
     document.getElementById('ebPrev').setAttribute('aria-label',lang==='fr'?'Page précédente':'Previous page');
     document.getElementById('ebNext').setAttribute('aria-label',lang==='fr'?'Page suivante':'Next page');
@@ -616,6 +636,22 @@ html.loading .nav,html.loading main,html.loading footer{opacity:0}
     setTimeout(reveal,15000);
   })();
 
+})();
+</script>
+<script>
+/* Go fullscreen on the first tap when a phone or tablet is held sideways.
+   Browsers only allow fullscreen after a tap, and iPhone Safari does not allow it for web pages. */
+(function(){
+  var de=document.documentElement, req=de.requestFullscreen||de.webkitRequestFullscreen;
+  if(!req||!window.matchMedia)return;
+  var mq=window.matchMedia('(orientation: landscape) and (pointer: coarse)');
+  function go(){
+    if(!mq.matches)return;
+    document.removeEventListener('click',go,true);
+    if(document.fullscreenElement||document.webkitFullscreenElement)return;
+    try{var p=req.call(de,{navigationUI:'hide'});if(p&&p.catch)p.catch(function(){});}catch(e){}
+  }
+  document.addEventListener('click',go,true);
 })();
 </script>
 </body>
