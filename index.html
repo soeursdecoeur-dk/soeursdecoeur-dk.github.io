@@ -27,7 +27,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@800&family=Delius&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Delius&display=swap" rel="stylesheet">
 <style>
 :root{
   --book-w:min(900px,66vw,calc((100vh - 330px)*2.372));
@@ -278,12 +278,46 @@ html.loading .nav,html.loading main,html.loading footer{opacity:0}
   footer{font-size:11px;line-height:1.6}
 }
 @media (max-height:500px) and (orientation:landscape){
-  :root{--book-w:min(88vw,calc((100vh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 110px)*2.372))}
-  @supports (height:100dvh){:root{--book-w:min(88vw,calc((100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 110px)*2.372))}}
+  :root{--book-w:min(94vw,calc((100vh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 96px)*2.372))}
+  @supports (height:100dvh){:root{--book-w:min(94vw,calc((100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 96px)*2.372))}}
   .nav{padding-top:22px;padding-right:max(24px,calc(env(safe-area-inset-right,0px) + 12px))}
   main{padding-top:4px;padding-bottom:4px}
   footer{font-size:10.5px;line-height:1.35;padding-bottom:4px}
 }
+/* ===== "?" button and contact card ===== */
+:root{--hb-s:clamp(26px,2vw,32px);--hb-r:max(20px,calc(env(safe-area-inset-right,0px) + 12px));--hb-b:max(20px,calc(env(safe-area-inset-bottom,0px) + 8px))}
+@media (max-height:500px) and (orientation:landscape){
+  :root{--hb-s:26px;--hb-r:max(12px,calc(env(safe-area-inset-right,0px) - 20px));--hb-b:max(8px,calc(env(safe-area-inset-bottom,0px) + 4px))}
+}
+.help-btn{position:fixed;z-index:40;right:var(--hb-r);bottom:var(--hb-b);width:var(--hb-s);height:var(--hb-s);
+  border-radius:50%;border:2px solid #fff;background:transparent;color:#fff;padding:2px 0 0;cursor:pointer;
+  font:800 calc(var(--hb-s) * .58)/1 "Baloo 2","Arial Rounded MT Bold",system-ui,sans-serif;display:flex;align-items:center;justify-content:center;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform .15s,background .15s}
+.help-btn:hover{transform:translateY(-2px);background:rgba(255,255,255,.12)}
+.help-btn:focus-visible{outline:3px solid var(--cream);outline-offset:3px}
+.lb.open ~ .help-btn,html.loading .help-btn{visibility:hidden}
+/* invisible layer behind the open card: a tap anywhere around it closes the card */
+.help-bg{position:fixed;inset:0;z-index:59;display:none;background:transparent;-webkit-tap-highlight-color:transparent}
+.help-bg.on{display:block}
+/* the card opens just to the left of the button, bottom-aligned with it */
+.help-card{position:fixed;z-index:60;right:calc(var(--hb-r) + var(--hb-s) + 8px);bottom:var(--hb-b);width:max-content;
+  max-width:calc(100vw - var(--hb-r) - var(--hb-s) - 24px);transform:scale(.94);transform-origin:100% 100%;
+  background:#fff;border:3px solid var(--ink);border-radius:12px;padding:6px 10px 7px;box-shadow:0 6px 18px rgba(10,6,40,.4);
+  color:var(--ink);font:600 13px/1.3 "Baloo 2","Arial Rounded MT Bold",system-ui,sans-serif;
+  opacity:0;visibility:hidden;transition:opacity .45s ease,transform .45s ease,visibility 0s linear .45s}
+.help-card.show{opacity:1;visibility:visible;transform:scale(1);transition:opacity .25s ease,transform .25s ease,visibility 0s}
+.help-card p{margin:0}
+.help-t{text-align:center;font-weight:800;margin-bottom:1px!important}
+.help-l{margin-bottom:1px!important}
+.help-e{display:flex;align-items:center;gap:3px;flex-wrap:nowrap}
+.help-e a{color:#3f6f86;text-decoration:underline;text-underline-offset:2px;overflow-wrap:anywhere}
+.help-copy{flex:none;display:flex;align-items:center;justify-content:center;width:26px;height:26px;margin:-6px -6px -6px 0;border:0;border-radius:6px;background:none;color:var(--ink);cursor:pointer;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.help-copy svg{width:14px;height:14px}
+.help-copy:hover{background:#efedf9}
+.help-copy:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+.help-ok{text-align:center;font-size:.9em;color:#2e7d4f;height:0;overflow:hidden;transition:height .2s}
+.help-ok.on{height:1.3em;margin-top:1px!important}
 </style>
 </head>
 <body>
@@ -367,6 +401,14 @@ html.loading .nav,html.loading main,html.loading footer{opacity:0}
   <p id="credit">Site web par Alesia Kulagina</p>
   <p>Illustrations @miyusaashibara</p>
 </footer>
+<button class="help-btn" id="helpBtn" type="button" aria-expanded="false" aria-controls="helpCard" aria-label="Questions? Contactez-moi">?</button>
+<div class="help-bg" id="helpBg" aria-hidden="true"></div>
+<div class="help-card" id="helpCard" role="status" aria-live="polite">
+  <p class="help-t" id="helpT">Questions?</p>
+  <p class="help-l" id="helpL">Contactez-moi:</p>
+  <p class="help-e"><a href="mailto:darakulagina98@gmail.com" id="helpMail">darakulagina98@gmail.com</a><button class="help-copy" id="helpCopy" type="button" aria-label="Copier l'adresse courriel"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="3" y="3" width="12" height="12" rx="1.5"/><rect x="9" y="9" width="12" height="12" rx="1.5" fill="#fff"/></svg></button></p>
+  <p class="help-ok" id="helpOk" aria-hidden="true"></p>
+</div>
 <script>
 (function(){
   var book=document.getElementById('book');
@@ -403,6 +445,7 @@ html.loading .nav,html.loading main,html.loading footer{opacity:0}
     book.querySelectorAll('.toc').forEach(function(b){b.setAttribute('aria-label',tl[l][b.dataset.go])});
     if(typeof loadAudio==='function')loadAudio();
     if(typeof lbLabels==='function')lbLabels();
+    if(typeof helpLabels==='function')helpLabels();
     show();
   }
   // ===== Audiobook: put each recording's link here =====
@@ -652,6 +695,38 @@ html.loading .nav,html.loading main,html.loading footer{opacity:0}
     try{var p=req.call(de,{navigationUI:'hide'});if(p&&p.catch)p.catch(function(){});}catch(e){}
   }
   document.addEventListener('click',go,true);
+})();
+</script>
+<script>
+/* "?" button: shows the contact card, which fades after 5 seconds. The copy icon copies the address. */
+(function(){
+  var btn=document.getElementById('helpBtn'), card=document.getElementById('helpCard'), copyB=document.getElementById('helpCopy'),
+      ok=document.getElementById('helpOk'), bg=document.getElementById('helpBg'), mail=document.getElementById('helpMail'), timer=null, hovering=false;
+  var T={fr:{btn:'Questions? Contactez-moi',l:'Contactez-moi:',copy:"Copier l'adresse courriel",ok:'Adresse copiée!',fail:'Copiez: '},
+         en:{btn:'Questions? Contact me',l:'Contact me:',copy:'Copy email address',ok:'Address copied!',fail:'Copy: '}};
+  function L(){return T[document.documentElement.lang==='en'?'en':'fr']}
+  window.helpLabels=function(){var t=L();btn.setAttribute('aria-label',t.btn);document.getElementById('helpL').textContent=t.l;copyB.setAttribute('aria-label',t.copy)};
+  helpLabels();
+  function hide(){clearTimeout(timer);card.classList.remove('show');bg.classList.remove('on');ok.classList.remove('on');btn.setAttribute('aria-expanded','false')}
+  function arm(){clearTimeout(timer);timer=setTimeout(function(){if(!hovering)hide();},5000)}
+  function show(){helpLabels();card.classList.add('show');bg.classList.add('on');btn.setAttribute('aria-expanded','true');arm()}
+  btn.addEventListener('click',function(e){e.stopPropagation();card.classList.contains('show')?hide():show()});
+  // keep it open while a mouse is over it (not on touch screens, where "hover" never ends)
+  if(window.matchMedia&&matchMedia('(hover:hover)').matches){
+    card.addEventListener('mouseenter',function(){hovering=true;clearTimeout(timer)});
+    card.addEventListener('mouseleave',function(){hovering=false;if(card.classList.contains('show'))arm()});
+  }
+  function done(msg){ok.textContent=msg;ok.classList.add('on');arm()}
+  copyB.addEventListener('click',function(e){
+    e.stopPropagation();var addr=mail.textContent.trim(),t=L();
+    function fallback(){var ta=document.createElement('textarea');ta.value=addr;ta.setAttribute('readonly','');ta.style.cssText='position:fixed;top:0;left:0;opacity:0';
+      document.body.appendChild(ta);ta.select();ta.setSelectionRange(0,addr.length);var r=false;try{r=document.execCommand('copy')}catch(err){}
+      document.body.removeChild(ta);done(r?t.ok:t.fail+addr)}
+    if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(addr).then(function(){done(t.ok)},fallback)}else fallback();
+  });
+  card.addEventListener('click',function(e){e.stopPropagation()});
+  bg.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();hide()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&card.classList.contains('show'))hide()});
 })();
 </script>
 </body>
