@@ -289,7 +289,8 @@ html.loading .nav,html.loading main,html.loading footer{opacity:0}
 @media (max-height:500px) and (orientation:landscape){
   :root{--hb-s:26px;--hb-r:max(12px,calc(env(safe-area-inset-right,0px) - 20px));--hb-b:max(8px,calc(env(safe-area-inset-bottom,0px) + 4px))}
 }
-.help-btn{position:fixed;z-index:40;right:var(--hb-r);bottom:var(--hb-b);width:var(--hb-s);height:var(--hb-s);
+.foot-text{position:relative}
+.help-btn{position:absolute;z-index:40;right:calc(var(--hb-r) - 16px);top:calc(50% - var(--hb-s) / 2);width:var(--hb-s);height:var(--hb-s);
   border-radius:50%;border:2px solid #fff;background:transparent;color:#fff;padding:2px 0 0;cursor:pointer;
   font:800 calc(var(--hb-s) * .58)/1 "Baloo 2","Arial Rounded MT Bold",system-ui,sans-serif;display:flex;align-items:center;justify-content:center;
   -webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform .15s,background .15s}
@@ -299,8 +300,8 @@ html.loading .nav,html.loading main,html.loading footer{opacity:0}
 /* invisible layer behind the open card: a tap anywhere around it closes the card */
 .help-bg{position:fixed;inset:0;z-index:59;display:none;background:transparent;-webkit-tap-highlight-color:transparent}
 .help-bg.on{display:block}
-/* the card opens just to the left of the button, bottom-aligned with it */
-.help-card{position:fixed;z-index:60;right:calc(var(--hb-r) + var(--hb-s) + 8px);bottom:var(--hb-b);width:max-content;
+/* the card opens just to the left of the button, bottom-aligned with it (both live inside the credits block) */
+.help-card{position:absolute;z-index:60;right:calc(var(--hb-r) - 16px + var(--hb-s) + 8px);bottom:calc(50% - var(--hb-s) / 2);width:max-content;text-align:left;letter-spacing:normal;
   max-width:calc(100vw - var(--hb-r) - var(--hb-s) - 24px);transform:scale(.94);transform-origin:100% 100%;
   background:#fff;border:3px solid var(--ink);border-radius:12px;padding:6px 10px 7px;box-shadow:0 6px 18px rgba(10,6,40,.4);
   color:var(--ink);font:600 13px/1.3 "Baloo 2","Arial Rounded MT Bold",system-ui,sans-serif;
@@ -398,17 +399,19 @@ html.loading .nav,html.loading main,html.loading footer{opacity:0}
   <div class="count" id="lbCount"></div>
 </div>
 <footer>
+ <div class="foot-text">
   <p id="credit">Site web par Alesia Kulagina</p>
   <p>Illustrations @miyusaashibara</p>
-</footer>
-<button class="help-btn" id="helpBtn" type="button" aria-expanded="false" aria-controls="helpCard" aria-label="Questions? Contactez-moi">?</button>
-<div class="help-bg" id="helpBg" aria-hidden="true"></div>
-<div class="help-card" id="helpCard" role="status" aria-live="polite">
+  <button class="help-btn" id="helpBtn" type="button" aria-expanded="false" aria-controls="helpCard" aria-label="Questions? Contactez-moi">?</button>
+  <div class="help-card" id="helpCard" role="status" aria-live="polite">
   <p class="help-t" id="helpT">Questions?</p>
   <p class="help-l" id="helpL">Contactez-moi:</p>
   <p class="help-e"><a href="mailto:darakulagina98@gmail.com" id="helpMail">darakulagina98@gmail.com</a><button class="help-copy" id="helpCopy" type="button" aria-label="Copier l'adresse courriel"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="3" y="3" width="12" height="12" rx="1.5"/><rect x="9" y="9" width="12" height="12" rx="1.5" fill="#fff"/></svg></button></p>
   <p class="help-ok" id="helpOk" aria-hidden="true"></p>
 </div>
+ </div>
+</footer>
+<div class="help-bg" id="helpBg" aria-hidden="true"></div>
 <script>
 (function(){
   var book=document.getElementById('book');
