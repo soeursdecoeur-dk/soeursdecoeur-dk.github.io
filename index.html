@@ -452,7 +452,7 @@ html.loading .nav,html.loading main,html.loading footer{opacity:0}
     show();
   }
   // ===== Audiobook: put each recording's link here =====
-  var AUDIO_SRC={fr:'assets/58547a43b7dd.m4a', en:''};
+  var AUDIO_SRC={fr:'assets/58547a43b7dd.m4a?v=3', en:''};
   var audio=document.getElementById('audio');
   var playBtn=document.getElementById('playBtn');
   function labels(){
@@ -582,8 +582,8 @@ html.loading .nav,html.loading main,html.loading footer{opacity:0}
   // ===== Music credit plaque =====
   var plaque=document.getElementById('plaque'), abI=document.getElementById('abI'), plaqueT=null;
   var CREDIT={
-    fr:'<h3>Musique de fond :</h3><p>Sonate pour piano n° 17 en si bémol majeur, K. 570 : III. Allegretto de W. A. Mozart.</p><p>Interprétée par Vadim Chaimovich</p>',
-    en:'<h3>Background music:</h3><p>Piano Sonata No. 17 in B-flat major, K. 570: III. Allegretto by W. A. Mozart.</p><p>Performed by Vadim Chaimovich</p>'};
+    fr:'<h3>Musique de fond :</h3><p>Sonate pour piano n° 13 en si bémol majeur, K. 333 : I. Allegro de W. A. Mozart.</p><p>Interprétée par Vadim Chaimovich</p>',
+    en:'<h3>Background music:</h3><p>Piano Sonata No. 13 in B-flat major, K. 333: I. Allegro by W. A. Mozart.</p><p>Performed by Vadim Chaimovich</p>'};
   function hidePlaque(){plaque.classList.remove('show');clearTimeout(plaqueT)}
   function showPlaque(){
     plaque.innerHTML=CREDIT[lang]; plaque.classList.remove('below');
