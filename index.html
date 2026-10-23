@@ -392,7 +392,7 @@ html.loading .nav,html.loading main,html.loading footer{opacity:0}
   <audio id="audio" preload="metadata"></audio>
 </main>
 <div class="lb" id="lb" role="dialog" aria-modal="true">
-  <div class="lb-fig"><div class="lb-year" id="lbYear"></div><img id="lbImg" alt=""><a class="lb-dl" id="lbDl" href="assets/Soeurs-de-Coeur.pdf" download="Sœurs de Cœur.pdf">Télécharger</a></div>
+  <div class="lb-fig"><div class="lb-year" id="lbYear"></div><img id="lbImg" alt=""><a class="lb-dl" id="lbDl" href="assets/Soeurs-de-Coeur.pdf?v=2" download="Sœurs de Cœur.pdf">Télécharger</a></div>
   <button type="button" class="x" id="lbX"><img src="assets/f5fcb85b70bf.png" alt=""></button>
   <button type="button" class="prev" id="lbPrev"><img src="assets/53046092f2e1.png" alt=""></button>
   <button type="button" class="next" id="lbNext"><img src="assets/5623cbdf42ab.png" alt=""></button>
@@ -603,7 +603,7 @@ html.loading .nav,html.loading main,html.loading footer{opacity:0}
   var lb=document.getElementById('lb'), lbImg=document.getElementById('lbImg'), cur=0, lastFocus=null;
   var T={fr:{close:'Fermer',prev:'Photo précédente',next:'Photo suivante',photo:'Photo',of:'sur',open:'Agrandir la photo'},
          en:{close:'Close',prev:'Previous photo',next:'Next photo',photo:'Photo',of:'of',open:'Enlarge photo'}};
-  var LIST=PHOTOS, EBOOK=["assets/3e1cd01ffd88.webp", "assets/20ae0122b9fd.webp", "assets/3460e8d8a9aa.webp", "assets/905769bf9cd8.webp", "assets/5710ed17391d.webp", "assets/3bf579dd41d7.webp", "assets/c2701fec7485.webp", "assets/2493945a7f86.webp", "assets/1884d0216be1.webp", "assets/8f6adf671eea.webp", "assets/f694a5b8cdde.webp", "assets/55fe155ade47.webp", "assets/cd5429dfeec9.webp", "assets/9142da77bfff.webp", "assets/08ac4ada246e.webp", "assets/86e43a62fa77.webp", "assets/13a0416151af.webp", "assets/2bfe4b8e488e.webp", "assets/279bc813a423.webp", "assets/9d7cfa0a7df6.webp", "assets/cbebf1ae09d5.webp", "assets/eda91447062c.webp"], mode='photo';
+  var LIST=PHOTOS, EBOOK=["assets/ebook-01.webp", "assets/ebook-02.webp", "assets/ebook-03.webp", "assets/ebook-04.webp", "assets/ebook-05.webp", "assets/ebook-06.webp", "assets/ebook-07.webp", "assets/ebook-08.webp", "assets/ebook-09.webp", "assets/ebook-10.webp", "assets/ebook-11.webp", "assets/ebook-12.webp", "assets/ebook-13.webp", "assets/ebook-14.webp", "assets/ebook-15.webp", "assets/ebook-16.webp", "assets/ebook-17.webp", "assets/ebook-18.webp", "assets/ebook-19.webp", "assets/ebook-20.webp", "assets/ebook-21.webp", "assets/ebook-22.webp"], mode='photo';
   var YEARS=['2024','2026','2024','2021','2024','2024','2026','2026','2018','2025'];
   function lbShow(i){
     cur=(i+LIST.length)%LIST.length;
