@@ -319,19 +319,6 @@ html.loading .nav,html.loading main,html.loading footer{opacity:0}
 .help-copy:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 .help-ok{text-align:center;font-size:.9em;color:#2e7d4f;height:0;overflow:hidden;transition:height .2s}
 .help-ok.on{height:1.3em;margin-top:1px!important}
-/* ===== "Additional illustrations" card ===== */
-.illus{position:fixed;inset:0;z-index:55;display:none;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;background:rgba(22,17,64,.9);
-  padding:max(env(safe-area-inset-top,0px),24px) 16px max(env(safe-area-inset-bottom,0px),24px)}
-.illus.open{display:grid;place-items:center}
-.illus-card{display:block;width:min(92vw,460px,max(280px,calc((100vh - 48px)*0.5105)));height:auto;aspect-ratio:924/1810;
-  border-radius:18px;background:#fff;box-shadow:0 10px 40px rgba(0,0,0,.45)}
-@supports (height:100dvh){.illus-card{width:min(92vw,460px,max(280px,calc((100dvh - 48px)*0.5105)))}}
-.illus .x{position:fixed;z-index:2;top:calc(env(safe-area-inset-top,0px) + 10px);right:calc(env(safe-area-inset-right,0px) + 14px);
-  width:clamp(40px,4.2vw,54px);height:auto;cursor:pointer;-webkit-appearance:none;appearance:none;background:transparent;border:0;padding:0;line-height:0;border-radius:12px;touch-action:manipulation}
-.illus .x img{width:100%;height:auto;display:block;pointer-events:none}
-.illus .x:hover img{transform:translateY(-2px)}
-.illus .x:focus-visible{outline:3px solid #fff;outline-offset:3px}
-.illus.open ~ footer{visibility:hidden}
 </style>
 </head>
 <body>
@@ -362,7 +349,6 @@ html.loading .nav,html.loading main,html.loading footer{opacity:0}
     <button type="button" class="hot toc" data-fr="41.8" data-en="42.7" data-go="livre"></button>
     <button type="button" class="hot toc" data-fr="49.7" data-en="50.1" data-go="histoire"></button>
     <button type="button" class="hot toc" data-fr="57.5" data-en="57.5" data-go="galerie"></button>
-    <button type="button" class="hot toc" data-fr="65.3" data-en="65.1" data-open="illus" aria-haspopup="dialog"></button>
 
     <div class="hot ebook" id="ebookBox" role="group">
       <img class="eb-page" id="ebookCover" alt="" tabindex="0" role="button">
@@ -412,10 +398,6 @@ html.loading .nav,html.loading main,html.loading footer{opacity:0}
   <button type="button" class="next" id="lbNext"><img src="assets/5623cbdf42ab.png" alt=""></button>
   <div class="count" id="lbCount"></div>
 </div>
-<div class="illus" id="illus" role="dialog" aria-modal="true">
-  <button type="button" class="x" id="illusX"><img src="assets/f5fcb85b70bf.png" alt=""></button>
-  <img class="illus-card" id="illusImg" data-src="assets/illustrations-khadeeja.webp" width="924" height="1810" alt="">
-</div>
 <footer>
  <div class="foot-text">
   <p id="credit">Site web par Alesia Kulagina</p>
@@ -462,8 +444,8 @@ html.loading .nav,html.loading main,html.loading footer{opacity:0}
     book.querySelectorAll('.sr[data-fr]').forEach(function(s){s.textContent=s.dataset[l]});
     book.querySelectorAll('.edge').forEach(function(b){b.setAttribute('aria-label',b.dataset[l])});
     book.querySelectorAll('.toc').forEach(function(a){a.style.top=a.dataset[l]+'%'});
-    var tl={fr:{audio:"Écouter le livre audio",livre:"Lire le livre électronique",histoire:"Comment c'est né",galerie:"Galerie de photos",illus:"Illustrations bonus"},en:{audio:"Listen to the audiobook",livre:"Read the e-book version",histoire:"How it came to be",galerie:"Photo gallery",illus:"Bonus illustrations"}};
-    book.querySelectorAll('.toc').forEach(function(b){b.setAttribute('aria-label',tl[l][b.dataset.go||b.dataset.open])});
+    var tl={fr:{audio:"Écouter le livre audio",livre:"Lire le livre électronique",histoire:"Comment c'est né",galerie:"Galerie de photos"},en:{audio:"Listen to the audiobook",livre:"Read the e-book version",histoire:"How it came to be",galerie:"Photo gallery"}};
+    book.querySelectorAll('.toc').forEach(function(b){b.setAttribute('aria-label',tl[l][b.dataset.go])});
     if(typeof loadAudio==='function')loadAudio();
     if(typeof lbLabels==='function')lbLabels();
     if(typeof helpLabels==='function')helpLabels();
@@ -621,8 +603,8 @@ html.loading .nav,html.loading main,html.loading footer{opacity:0}
   var lb=document.getElementById('lb'), lbImg=document.getElementById('lbImg'), cur=0, lastFocus=null;
   var T={fr:{close:'Fermer',prev:'Photo précédente',next:'Photo suivante',photo:'Photo',of:'sur',open:'Agrandir la photo'},
          en:{close:'Close',prev:'Previous photo',next:'Next photo',photo:'Photo',of:'of',open:'Enlarge photo'}};
-  var LIST=PHOTOS, EBOOK=["assets/ebook-01.webp", "assets/ebook-02.webp", "assets/ebook-03.webp", "assets/ebook-04.webp", "assets/ebook-05.webp", "assets/ebook-06.webp", "assets/ebook-07.webp", "assets/ebook-08.webp", "assets/ebook-09.webp", "assets/ebook-10.webp", "assets/ebook-11.webp", "assets/ebook-12.webp", "assets/ebook-13.webp", "assets/ebook-14.webp", "assets/ebook-15.webp", "assets/ebook-16.webp", "assets/ebook-17.webp", "assets/ebook-18.webp", "assets/ebook-19.webp", "assets/ebook-20.webp", "assets/ebook-21.webp", "assets/ebook-22.webp"], mode='photo';
-  var YEARS=['2024','2026','2024','2021','2024','2024','2026','2026','2018','2025'];
+  var LIST=PHOTOS, EBOOK=["assets/ebook-01.webp", "assets/ebook-02.webp", "assets/ebook-03.webp", "assets/ebook-04.webp", "assets/ebook-05.webp", "assets/ebook-06.webp", "assets/ebook-07.webp", "assets/ebook-08.webp", "assets/ebook-09.webp", "assets/ebook-10.webp", "assets/ebook-11.webp", "assets/ebook-12.webp", "assets/ebook-13.webp", "assets/ebook-14.webp", "assets/ebook-15.webp", "assets/ebook-16.webp", "assets/ebook-17.webp", "assets/ebook-18.webp", "assets/ebook-19.webp", "assets/ebook-20.webp", "assets/ebook-21.webp", "assets/ebook-22.webp", "assets/ebook-23.webp"], mode='photo';
+  var YEARS=['2024','2026','2026','2021','2024','2024','2026','2026','2018','2025'];
   function lbShow(i){
     cur=(i+LIST.length)%LIST.length;
     lbImg.src=LIST[cur];
@@ -679,7 +661,7 @@ html.loading .nav,html.loading main,html.loading footer{opacity:0}
 
   langBtn.querySelectorAll('.lang-half').forEach(function(b){b.addEventListener('click',function(){if(b.dataset.l!==lang)setLang(b.dataset.l)})});
   // Contents lines and bookmark tabs: navigate via JS (works inside embedded viewers too)
-  book.querySelectorAll('.toc,.edge').forEach(function(b){b.addEventListener('click',function(){if(b.dataset.open){if(window.openIllus)window.openIllus()}else go(b.dataset.go)})});
+  book.querySelectorAll('.toc,.edge').forEach(function(b){b.addEventListener('click',function(){go(b.dataset.go)})});
   book.querySelectorAll('.tab').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();go(a.getAttribute('href').slice(1))})});
   home.addEventListener('click',function(e){e.preventDefault();go('sommaire')});
   function go(k){if(('#'+k)!==location.hash){try{history.pushState(null,'','#'+k)}catch(err){location.hash=k}}show()}
@@ -748,24 +730,6 @@ html.loading .nav,html.loading main,html.loading footer{opacity:0}
   card.addEventListener('click',function(e){e.stopPropagation()});
   bg.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();hide()});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&card.classList.contains('show'))hide()});
-})();
-</script>
-<script>
-/* "Additional illustrations": opens the illustrator's page as a rounded card */
-(function(){
-  var ov=document.getElementById('illus'), img=document.getElementById('illusImg'), x=document.getElementById('illusX'), last=null;
-  var T={fr:{label:'Illustrations bonus',close:'Fermer',alt:"Illustrations de Khadeeja, l'illustratrice du livre : les deux chattes près de leurs bols, endormies ensemble dans un panier, puis jouant avec une pelote de laine."},
-         en:{label:'Bonus illustrations',close:'Close',alt:'Illustrations by Khadeeja, the book illustrator: the two cats by their bowls, asleep together in a basket, then playing with a ball of yarn.'}};
-  function L(){return T[document.documentElement.lang==='en'?'en':'fr']}
-  window.openIllus=function(){
-    var t=L(); if(!img.getAttribute('src'))img.src=img.dataset.src;
-    img.alt=t.alt; ov.setAttribute('aria-label',t.label); x.setAttribute('aria-label',t.close);
-    last=document.activeElement; ov.classList.add('open'); ov.scrollTop=0; document.body.style.overflow='hidden'; x.focus();
-  };
-  function close(){ov.classList.remove('open');document.body.style.overflow='';if(last)last.focus()}
-  x.addEventListener('click',close);
-  ov.addEventListener('click',function(e){if(e.target===ov)close()});
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&ov.classList.contains('open'))close()});
 })();
 </script>
 </body>
